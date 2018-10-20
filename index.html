@@ -1,19 +1,60 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<title>RSS Feed</title>
-	<script src='rss.js' defer></script>
-	<link rel='stylesheet' href='style.css'>
+    <meta charset="UTF-8">
+    <title>RSS Feed</title>
+
+
+
+    <!--
+    "feed": {
+    "xmlns": "http://www.w3.org/2005/Atom", "dc": "http://purl.org/dc/elements/1.1/", "title": "Warroad Youth Hockey Events with tag(s): 8U/6U", "link": [{ "href": "https://www.warroadhockey.com/event/show_events_from_rss/265389?tags=4539649", "rel": "alternate" }, { "href": "https://www.warroadhockey.com/event/show_events_from_rss/265389?tags=4539649", "rel": "self", "type": "application/rss+xml", "atom": "https://www.w3.org/2005/Atom" }], "subtitle": "Events with tag(s): 8U/6U", "language": "en-us", "entry": {
+    "title": "Saturday October 27, 2018: 8U,6U Practice", "link": { "href": "http://www.warroadhockey.com/event/show/432806463", "rel": "alternate" }, "author": { "name": null }, "id": "event_id_432806463_start_date_10_27_18", "updated": "2018-10-27T15:10:00Z", "published": "2018-10-27T15:10:00Z", "summary": {
+    "type": "html", "content": "Date: Saturday October 27, 2018
+    < br > Time: 10: 10am - 11: 10am
+    < br > Location: Olympic
+    <br>Tag(s): 8U/6U
+    < br >
+    <br>"},"date":"2018-10-27T15:10:00Z"}}}}});
+    -->
+
+    <script type="text/javascript">
+        function injectScript(url) {
+            var scriptElement = document.createElement('script');
+            scriptElement.setAttribute('type', 'text/javascript');
+            scriptElement.setAttribute('src', url);
+            document.getElementsByTagName('head')[0].appendChild(scriptElement);
+        }
+
+
+        function handleResponse(response) {
+            var text = '',
+                item;
+            alert(response.query.results);
+            for (var i = 0, k = response.query.results.feed.entry.length; i < k; i++) {
+                alert(i);
+                item = response.query.results.feed.entry[i];
+                text += '<li><a href="' + item.link.href + '">' + item.title + '</a></li>';
+            }
+            document.getElementById('main-content').innerHTML = text;
+        }
+        document.addEventListener("DOMContentLoaded", function () {
+            // https://developer.yahoo.com/yql/console/
+            // select * from feednormalizer where url='http://news.ycombinator.com/rss' and output='atom_1.0'
+            //injectScript("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feednormalizer%20where%20url%3D'http%3A%2F%2Fnews.ycombinator.com%2Frss'%20and%20output%3D'atom_1.0'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=handleResponse");
+            injectScript("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feednormalizer%20where%20url%3D'https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649'%20and%20output%3D'atom_1.0'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=handleResponse");
+
+
+        }, false);
+                     //https://www.warroadhockey.com/event_rss_feed?tags=4539649
+                    //https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+        //    https://www.warroadhockey.com/event_rss_feed?tags=265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+    </script>
+    <link rel='stylesheet' href='style.css'>
 </head>
 <body>
-	<h1>RSS Reader (JavaScript)</h1>
-	<output>Loading...</output>
-	<template>
-		<h2></h2>
-		<h3></h3>
-		<a href='#'></a>
-		<p></p>
-	</template>
-</body>
+	<h1>Game Schedule</h1>
+	<ul id="main-content">
+    <li>Loading...</li>
+</ul></body>
 </html>
