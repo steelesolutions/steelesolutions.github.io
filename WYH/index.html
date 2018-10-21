@@ -1,0 +1,604 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Olympic Arena</title>
+
+    <style>
+
+        /* LAYOUT */
+        .MainTable {
+            width: 1920px;
+            height: 1080px;
+            border:solid;
+        }
+        .schedulebody {
+            float: left;
+            vertical-align: top;
+            margin: 0 auto;
+            overflow: hidden;
+            width: 1300px;
+            position: relative;
+        }
+        .dheader {
+            background-color:lightgray; 
+        }
+
+        li {
+            font: 400 40px/1.5 Helvetica, Verdana, sans-serif;
+            border-bottom: 1px solid #ccc;
+            list-style: none;
+        }
+
+        li:last-child {
+                border: none; list-style:none;
+         }
+        
+        .container {
+            float: right;
+            margin: 0 auto;
+            overflow: hidden;
+            width: 300px;
+        }
+
+
+        /* CONTENT SLIDER */
+        #content-slider {
+            width: 100%;
+        }
+        /* SLIDER */
+        #slider {
+            width: 300px;
+            overflow: visible;
+            position: relative;
+        }
+
+        #mask {
+            overflow: hidden;
+            height: 600px;
+        }
+
+        #slider ul {
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+        #slider li {
+            width: 300px;
+            height: 600px;
+            position: absolute;
+            top: -10px;
+            list-style: none;
+        }
+
+
+        /* ANIMATION */
+        @-webkit-keyframes cycle {
+            0% {
+                top: 0px;
+            }
+
+            4% {
+                top: 0px;
+            }
+
+            16% {
+                top: 0px;
+                opacity: 1;
+                z-index: 0;
+            }
+
+            20% {
+                top: 325px;
+                opacity: 0;
+                z-index: 0;
+            }
+
+            21% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+
+            50% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+
+            92% {
+                top: -325px;
+                opacity: 0;
+                z-index: 0;
+            }
+
+            96% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            100% {
+                top: 0px;
+                opacity: 1;
+            }
+        }
+
+        @-webkit-keyframes cycletwo {
+            0% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            16% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            20% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            24% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            36% {
+                top: 0px;
+                opacity: 1;
+                z-index: 0;
+            }
+
+            40% {
+                top: 325px;
+                opacity: 0;
+                z-index: 0;
+            }
+
+            41% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+
+            100% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+        }
+
+        @-webkit-keyframes cyclethree {
+            0% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            36% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            40% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            44% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            56% {
+                top: 0px;
+                opacity: 1;
+                z-index: 0;
+            }
+
+            60% {
+                top: 325px;
+                opacity: 0;
+                z-index: 0;
+            }
+
+            61% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+
+            100% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+        }
+
+        @-webkit-keyframes cyclefour {
+            0% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            56% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            60% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            64% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            76% {
+                top: 0px;
+                opacity: 1;
+                z-index: 0;
+            }
+
+            80% {
+                top: 325px;
+                opacity: 0;
+                z-index: 0;
+            }
+
+            81% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+
+            100% {
+                top: -325px;
+                opacity: 0;
+                z-index: -1;
+            }
+        }
+
+        @-webkit-keyframes cyclefive {
+            0% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            76% {
+                top: -325px;
+                opacity: 0;
+            }
+
+            80% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            84% {
+                top: 0px;
+                opacity: 1;
+            }
+
+            96% {
+                top: 0px;
+                opacity: 1;
+                z-index: 0;
+            }
+
+            100% {
+                top: 325px;
+                opacity: 0;
+                z-index: 0;
+            }
+        }
+        /* ANIMATION BAR */
+        @-webkit-keyframes fullexpand {
+            0%, 20%, 40%, 60%, 80%, 100% {
+                width: 0%;
+                opacity: 0;
+            }
+
+            4%, 24%, 44%, 64%, 84% {
+                width: 0%;
+                opacity: 0.3;
+            }
+
+            16%, 36%, 56%, 76%, 96% {
+                width: 100%;
+                opacity: 0.7;
+            }
+
+            17%, 37%, 57%, 77%, 97% {
+                width: 100%;
+                opacity: 0.3;
+            }
+
+            18%, 38%, 58%, 78%, 98% {
+                width: 100%;
+                opacity: 0;
+            }
+        }
+
+        #slider li.firstanimation {
+            -webkit-animation: cycle 25s linear infinite;
+        }
+
+        #slider li.secondanimation {
+            -webkit-animation: cycletwo 25s linear infinite;
+        }
+
+        #slider li.thirdanimation {
+            -webkit-animation: cyclethree 25s linear infinite;
+        }
+
+        #slider li.fourthanimation {
+            -webkit-animation: cyclefour 25s linear infinite;
+        }
+
+        #slider li.fifthanimation {
+            -webkit-animation: cyclefive 25s linear infinite;
+        }
+    </style>
+
+
+
+    <!--
+    "feed": {
+    "xmlns": "http://www.w3.org/2005/Atom", "dc": "http://purl.org/dc/elements/1.1/", "title": "Warroad Youth Hockey Events with tag(s): 8U/6U", "link": [{ "href": "https://www.warroadhockey.com/event/show_events_from_rss/265389?tags=4539649", "rel": "alternate" }, { "href": "https://www.warroadhockey.com/event/show_events_from_rss/265389?tags=4539649", "rel": "self", "type": "application/rss+xml", "atom": "https://www.w3.org/2005/Atom" }], "subtitle": "Events with tag(s): 8U/6U", "language": "en-us", "entry": {
+    "title": "Saturday October 27, 2018: 8U,6U Practice", "link": { "href": "http://www.warroadhockey.com/event/show/432806463", "rel": "alternate" }, "author": { "name": null }, "id": "event_id_432806463_start_date_10_27_18", "updated": "2018-10-27T15:10:00Z", "published": "2018-10-27T15:10:00Z", "summary": {
+    "type": "html", "content": "Date: Saturday October 27, 2018
+    < br > Time: 10: 10am - 11: 10am
+    < br > Location: Olympic
+    <br>Tag(s): 8U/6U
+    < br >
+    <br>"},"date":"2018-10-27T15:10:00Z"}}}}});
+    -->
+    <!-- 1920*1080-->
+    <!-- 
+                        
+        Today                   MARVIN ADV.  
+
+        Olympic Schedule        news 
+        
+        Upcoming Games 
+
+        
+        -->
+
+
+    <script type="text/javascript">
+
+
+        function sortByProperty(objArray, prop, direction) {
+            if (arguments.length < 2) throw new Error("ARRAY, AND OBJECT PROPERTY MINIMUM ARGUMENTS, OPTIONAL DIRECTION");
+            if (!Array.isArray(objArray)) throw new Error("FIRST ARGUMENT NOT AN ARRAY"); '1'
+            const clone = objArray.slice(0);
+            const direct = arguments.length > 2 ? arguments[2] : 1; //Default to ascending
+            const propPath = (prop.constructor === Array) ? prop : prop.split(".");
+            clone.sort(function (a, b) {
+                for (let p in propPath) {
+                    if (a[propPath[p]] && b[propPath[p]]) {
+                        a = a[propPath[p]];
+                        b = b[propPath[p]];
+                    }
+                }
+                // convert numeric strings to integers
+                a = a.match(/^\d+$/) ? +a : a;
+                b = b.match(/^\d+$/) ? +b : b;
+                return ((a < b) ? -1 * direct : ((a > b) ? 1 * direct : 0));
+            });
+            return clone;
+        }
+
+        function injectScript(url) {
+            var scriptElement = document.createElement('script');
+            scriptElement.setAttribute('type', 'text/javascript');
+            scriptElement.setAttribute('src', url);
+            document.getElementsByTagName('head')[0].appendChild(scriptElement);
+        }
+
+        function handleResponse(response) {
+            var text = '',
+                arenatext = '',
+                arenatext2='',
+                item,
+                scheduled_event;
+            var resultsByObjectId = sortByProperty(response.query.results.feed.entry, 'attributes.date', -1);
+            //create javascript object and collection to load the feed into in order to avoid issues
+            var scheduled_events = [];
+            var todays_events = [];
+
+            var today = new Date();
+            var dd = today.getDate().toString();
+            var mm = today.getMonth() + 1; //January is 0!
+            if (dd < 10) { dd = '0' + dd; }
+            if (mm < 10) { mm = '0' + mm; }
+            today = today.getFullYear().toString() + mm.toString() + dd;
+
+
+            // only want to go 7 days later on the schedule.
+            var todayPlus7 = new Date();
+            todayPlus7.setDate(todayPlus7.getDate() + 7);
+
+            dd = todayPlus7.getDate().toString();
+            mm = todayPlus7.getMonth() + 1; //January is 0!
+            if (dd < 10) { dd = '0' + dd; }
+            if (mm < 10) { mm = '0' + mm; }
+            var strtodayPlus7 = todayPlus7.getFullYear().toString() + mm.toString() + dd;
+
+
+            for (var i = 0, k = response.query.results.feed.entry.length; i < k; i++) {
+                var title;
+                var startdate;
+                var displaytime;
+                var starttime;
+                var endtime;
+                var fulldate;
+                var tags;
+                var location;
+
+
+                item = response.query.results.feed.entry[i];
+                idate = new Date(item.date);
+                dd = idate.getDate().toString();
+                mm = idate.getMonth() + 1; //January is 0!
+                if (dd < 10) { dd = '0' + dd; }
+                if (mm < 10) { mm = '0' + mm; }
+                idate = idate.getFullYear().toString() + mm.toString() + dd;
+
+
+                if (idate <= strtodayPlus7) {
+
+                    startdate = item.title.split(":")[0];
+                    title = item.title.split(":")[1].replace(' @ Warroad Arenas', '').replace(' Practice','');
+                    fulldate = item.date;
+                    displaytime = item.summary.content.split("<br>")[1].split(": ")[1];
+                    starttime = displaytime;
+                    if (displaytime.split(" - ").length > 1) {
+                        starttime = displaytime.split(" - ")[0];
+                        endtime = displaytime.split(" - ")[1];
+                    }
+
+                    tags = item.summary.content.split("<br>")[3];
+                    if (item.summary.content.split("<br>")[2].split(":")[2] !== undefined) {
+                        location = item.summary.content.split("<br>")[2].split(":")[2].trim();
+                    } else location = null;
+
+                    if (today === idate) {
+                        todays_events.push({ displaytime:displaytime,idate: idate, title: title, startdate: startdate, fulldate: fulldate, starttime: starttime, endtime: endtime, tags: tags, location: location });
+                    }
+                    else {
+                        scheduled_events.push({displaytime:displaytime, idate: idate, title: title, startdate: startdate, fulldate: fulldate, starttime: starttime, endtime: endtime, tags: tags, location: location });
+                    }
+                }
+            }
+
+
+
+            var cdate;
+            var daycnt = 0;
+            for (var i = 0, k = scheduled_events.length; i < k; i++) {
+
+                item = scheduled_events[i];
+
+                if (item.location === "Olympic Arena") {
+
+
+                    if (cdate !== item.startdate) {
+                        if (daycnt < 4) {
+                               arenatext += '<li class="dheader">' + item.startdate + '</li>';
+                               arenatext += '<li>&nbsp;&nbsp;' + item.displaytime + ' &nbsp;&nbsp;&nbsp;' + item.title +'</li>';
+                        }
+                        else {
+                            arenatext2 += '<li class="dheader">' + item.startdate + '</li>';
+                            arenatext2 += '<li>&nbsp;&nbsp;' + item.displaytime + ' &nbsp;&nbsp;&nbsp;' + item.title + '</li>';
+
+                        }
+                       daycnt ++;
+                       cdate = item.startdate;
+                    }
+                    else {
+
+                        if (daycnt < 5) {
+                            arenatext += '<li>&nbsp;&nbsp;' + item.displaytime + ' &nbsp;&nbsp;&nbsp;' + item.title + '</li>';
+
+                        }
+                        else {
+                            arenatext2 += '<li>&nbsp;&nbsp;' + item.displaytime + ' &nbsp;&nbsp;&nbsp;' + item.title + '</li>';
+                        }
+                    }
+
+
+                }
+             
+            }
+
+            for (var i = 0, k = todays_events.length; i < k; i++) {
+                item = todays_events[i];
+                if (item.location === "Olympic Arena") {
+                    if (cdate !== item.startdate) {
+                        text += '<li>&nbsp;&nbsp;' + item.displaytime + ' &nbsp;&nbsp;&nbsp;' + item.title + '</li>';
+                    }
+                }
+            }
+            document.getElementById('main-content').innerHTML = text;
+            document.getElementById('arena-content').innerHTML = arenatext;
+            document.getElementById('arena2-content').innerHTML = arenatext2;
+
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            //injectScript("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feednormalizer%20where%20url%3D'http%3A%2F%2Fnews.ycombinator.com%2Frss'%20and%20output%3D'atom_1.0'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=handleResponse");
+            injectScript("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feednormalizer%20where%20url%3D'https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D267495%2C654529%2C3717871%2C4539608%2C4539616%2C4539621%2C4539623%2C4539624%2C4539625%2C4539626%2C4539627%2C4539628%2C4539629%2C4539631%2C4539633%2C4539636%2C4539637%2C4539639%2C4539649'%20and%20output%3D'atom_1.0'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=handleResponse");
+        }, false);
+
+                        //      https://www.warroadhockey.com/event_rss_feed?tags=4539649
+                        //https://www.warroadhockey.com/event_rss_feed?tags=
+                        //      https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+                        //      https://www.warroadhockey.com/event_rss_feed?tags=265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+                        //      webcal://www.warroadhockey.com/ical_feed?tags=265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+    </script>
+</head>
+<body>
+    
+    <table class="MainTable">
+        <tr>
+            <td valign="top" width="1300px">
+                <div class="schedulebody" >
+                    <h1>A Look at Today</h1>
+                    <ul id="main-content">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <div>
+
+                </div>
+                <div class="container">
+                    <div id="logo"><img src="Logo.PNG" width="300" /></div>
+                        <div id="content-slider">
+                            <div id="slider">
+                                <div id="mask">
+                                    <ul>
+                                        <li id="first" class="firstanimation"><img src="FeaturedProduct1.PNG" width="300" /></li>
+                                        <li id="second" class="secondanimation"><img src="FeaturedProduct2.PNG" width="300" /></li>
+                                        <li id="third" class="thirdanimation"><img src="FeaturedProduct3.PNG" width="300" /></li>
+                                        <li id="fourth" class="fourthanimation"><img src="FeaturedProduct3.PNG" width="300" /></li>
+                                        <li id="fifth" class="fifthanimation"><img src="FeaturedProduct4.PNG" width="300" /></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">
+                <div class="schedulebody">
+                    <h1>Coming Up</h1>
+                    <ul id="arena-content">
+                        <li>Loading...</li>
+                    </ul>
+
+
+                </div>
+            </td>
+            <td valign="top">
+                <div class="schedulebody">
+                    <h1>&nbsp;</h1>
+
+                    <ul id="arena2-content">
+                        <li>Loading...</li>
+                    </ul>
+
+
+                </div>
+            </td>
+</table>
+</body>
+</html>

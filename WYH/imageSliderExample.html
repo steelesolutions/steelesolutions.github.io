@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+
+<style>
+@keyframes slider {
+
+0% {
+	Left:0;
+}
+20% {
+	Left:0;
+}
+25% {
+	Left: -100%;
+}
+45%{
+	Left:-100%;
+}
+50% {
+	Left:-200%;
+}
+70% {
+	Left:-200%;
+}
+75%{
+	Left:-300%;
+}
+95%{
+	Left:-300%;
+}
+100%{
+	Left:400%;
+}
+
+}
+
+#slider {
+	overflow: hidden;
+}
+
+#slider figure img{
+	width: 20%;
+    height:200px;
+	float: left; 
+}
+
+    #slider figure {
+        position: relative;
+        width: 500%;
+        margin: 0;
+        Left: 0;
+        text-align: left;
+        font-size: 0;
+        animation: 20s slider infinite;
+    }
+
+    #schedulebody {
+            float:left;
+
+    }
+</style>
+</head>
+<body>
+    <div id="slider">
+        <figure>
+            <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/09/mhc-18-0116_canaminn_webslider_post-300x154.jpg">
+              <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/02/mhc-flipper-experts-020618.jpg">
+            <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/02/mhc-flipper-financing-020618web.jpg">
+        </figure>
+    </div>
+    
+    <div id="schedulebody">
+        <schedule>
+            <iframe src="https://calendar.google.com/calendar/embed?showTitle=0&amp;showNav=0&amp;showDate=0&amp;showPrint=0&amp;showTabs=0&amp;showCalendars=0&amp;showTz=0&amp;mode=AGENDA&amp;height=800&amp;wkst=2&amp;bgcolor=%23666666&amp;src=p83l4kmltv80752b20slbgkpdlpb00on%40import.calendar.google.com&amp;color=%235229A3&amp;ctz=America%2FChicago" style="border:solid 1px #777" width="800" height="800" frameborder="0" scrolling="no"></iframe>
+        </schedule>
+        <weather>
+            <a href="https://www.accuweather.com/en/us/warroad-mn/56763/weather-forecast/338934" class="aw-widget-legal"></a>
+            <div id="awcc1539636026762" class="aw-widget-current" data-locationkey="" data-unit="f" data-language="en-us" data-useip="true" data-uid="awcc1539636026762"></div>
+            <script type="text/javascript" src="https://oap.accuweather.com/launch.js"></script>
+        </weather>
+    </div>
+
+  
+
+
+</body>
+</html>
