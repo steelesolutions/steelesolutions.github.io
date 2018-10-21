@@ -12,38 +12,31 @@
             margin: 0 auto;
             overflow: hidden;
             width: 600px;
-            height: 900px;
             position: relative;
-            border: 5px solid #eaeaea;
         }
 
         .container {
             float: right;
             margin: 0 auto;
             overflow: hidden;
-            width: 600px;
+            width: 300px;
         }
 
 
         /* CONTENT SLIDER */
         #content-slider {
             width: 100%;
-            height: 900px;
         }
         /* SLIDER */
         #slider {
-            /*background: #000;*/
-            border: 5px solid #eaeaea;
-            box-shadow: 1px 1px 5px rgba(0,0,0,0.7);
-            height: 900px;
-            width: 600px;
+            width: 300px;
             overflow: visible;
             position: relative;
         }
 
         #mask {
             overflow: hidden;
-            height: 900px;
+            height: 600px;
         }
 
         #slider ul {
@@ -53,8 +46,8 @@
         }
 
         #slider li {
-            width: 600px;
-            height: 900px;
+            width: 300px;
+            height: 600px;
             position: absolute;
             top: -10px;
             list-style: none;
@@ -345,8 +338,43 @@
     < br >
     <br>"},"date":"2018-10-27T15:10:00Z"}}}}});
     -->
+    <!-- 1920*1080-->
+    <!-- 
+                        
+        Today                   MARVIN ADV.  
+
+        Olympic Schedule        news 
+        
+        Upcoming Games 
+
+        
+        -->
+
 
     <script type="text/javascript">
+
+
+        function sortByProperty(objArray, prop, direction) {
+            if (arguments.length < 2) throw new Error("ARRAY, AND OBJECT PROPERTY MINIMUM ARGUMENTS, OPTIONAL DIRECTION");
+            if (!Array.isArray(objArray)) throw new Error("FIRST ARGUMENT NOT AN ARRAY"); '1'
+            const clone = objArray.slice(0);
+            const direct = arguments.length > 2 ? arguments[2] : 1; //Default to ascending
+            const propPath = (prop.constructor === Array) ? prop : prop.split(".");
+            clone.sort(function (a, b) {
+                for (let p in propPath) {
+                    if (a[propPath[p]] && b[propPath[p]]) {
+                        a = a[propPath[p]];
+                        b = b[propPath[p]];
+                    }
+                }
+                // convert numeric strings to integers
+                a = a.match(/^\d+$/) ? +a : a;
+                b = b.match(/^\d+$/) ? +b : b;
+                return ((a < b) ? -1 * direct : ((a > b) ? 1 * direct : 0));
+            });
+            return clone;
+        }
+
         function injectScript(url) {
             var scriptElement = document.createElement('script');
             scriptElement.setAttribute('type', 'text/javascript');
@@ -354,31 +382,120 @@
             document.getElementsByTagName('head')[0].appendChild(scriptElement);
         }
 
-
         function handleResponse(response) {
             var text = '',
-                item;
-            //alert(response.query.results);
+                arenatext = '',
+                item,
+                scheduled_event;
+            var resultsByObjectId = sortByProperty(response.query.results.feed.entry, 'attributes.date', -1);
+            //create javascript object and collection to load the feed into in order to avoid issues
+            var scheduled_events = [];
+            var todays_events = [];
+
+            var today = new Date();
+            var dd = today.getDate().toString();
+            var mm = today.getMonth() + 1; //January is 0!
+            if (dd < 10) { dd = '0' + dd; }
+            if (mm < 10) { mm = '0' + mm; }
+            today = today.getFullYear().toString() + mm.toString() + dd;
+
+
+            // only want to go 7 days later on the schedule.
+            var todayPlus7 = new Date();
+            todayPlus7.setDate(todayPlus7.getDate() + 7);
+
+            dd = todayPlus7.getDate().toString();
+            mm = todayPlus7.getMonth() + 1; //January is 0!
+            if (dd < 10) { dd = '0' + dd; }
+            if (mm < 10) { mm = '0' + mm; }
+            var strtodayPlus7 = todayPlus7.getFullYear().toString() + mm.toString() + dd;
+
+
             for (var i = 0, k = response.query.results.feed.entry.length; i < k; i++) {
-                // alert(i);
+                var title;
+                var startdate;
+                var starttime;
+                var endtime;
+                var fulldate;
+                var tags;
+                var location;
+
+
                 item = response.query.results.feed.entry[i];
-                text += '<li><a href="' + item.link.href + '">' + item.title + '</a></li>';
+                idate = new Date(item.date);
+                dd = idate.getDate().toString();
+                mm = idate.getMonth() + 1; //January is 0!
+                if (dd < 10) { dd = '0' + dd; }
+                if (mm < 10) { mm = '0' + mm; }
+                idate = idate.getFullYear().toString() + mm.toString() + dd;
+
+
+                if (idate <= strtodayPlus7) {
+
+                    startdate = item.title.split(":")[0];
+                    title = item.title.split(":")[1];
+                    fulldate = item.date;
+                    starttime = item.summary.content.split("<br>")[1].split(": ")[1];
+                    stoptime = item.summary.content.split("<br>")[1].split(": ")[1].split(" - ");
+                    tags = item.summary.content.split("<br>")[3];
+                    if (item.summary.content.split("<br>")[2].split(":")[2] !== undefined) {
+                        location = item.summary.content.split("<br>")[2].split(":")[2].trim();
+                    } else location = null;
+
+                    if (today === idate) {
+                        todays_events.push({ idate: idate, title: title, startdate: startdate, fulldate: fulldate, starttime: starttime, endtime: endtime, tags: tags, location: location });
+                    }
+                    else {
+                        scheduled_events.push({ idate: idate, title: title, startdate: startdate, fulldate: fulldate, starttime: starttime, endtime: endtime, tags: tags, location: location });
+                    }
+                }
+            }
+
+
+
+            var cdate;
+            for (var i = 0, k = scheduled_events.length; i < k; i++) {
+
+                item = scheduled_events[i];
+
+                if (item.location === "Olympic Arena") {
+                   if (cdate !== item.startdate) {
+                        arenatext += '<li class="dheader">' + item.startdate + '</li>';
+                        arenatext += '<li>&nbsp;&nbsp;' + item.title + ', ' + item.starttime + '-' + item.endtime + '</li>';
+                        cdate = item.startdate;
+                    }
+                    else {
+                        arenatext += '<li>&nbsp;&nbsp;' + item.title + '</li>';
+                    }
+
+                }
+             
+            }
+
+            for (var i = 0, k = todays_events.length; i < k; i++) {
+                item = todays_events[i];
+                if (item.location === "Olympic Arena") {
+                    if (cdate !== item.startdate) {
+                        text += '<li>' + item.title + ', ' + item.starttime + '-' + item.endtime + '</li>';
+                    }
+                }
             }
             document.getElementById('main-content').innerHTML = text;
+            document.getElementById('arena-content').innerHTML = arenatext;
+
         }
+
         document.addEventListener("DOMContentLoaded", function () {
-            // https://developer.yahoo.com/yql/console/
-            // select * from feednormalizer where url='http://news.ycombinator.com/rss' and output='atom_1.0'
             //injectScript("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feednormalizer%20where%20url%3D'http%3A%2F%2Fnews.ycombinator.com%2Frss'%20and%20output%3D'atom_1.0'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=handleResponse");
-            injectScript("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feednormalizer%20where%20url%3D'https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649'%20and%20output%3D'atom_1.0'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=handleResponse");
-
-
+            injectScript("https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20feednormalizer%20where%20url%3D'https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D267495%2C654529%2C3717871%2C4539608%2C4539616%2C4539621%2C4539623%2C4539624%2C4539625%2C4539626%2C4539627%2C4539628%2C4539629%2C4539631%2C4539633%2C4539636%2C4539637%2C4539639%2C4539649'%20and%20output%3D'atom_1.0'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=handleResponse");
         }, false);
-                             //https://www.warroadhockey.com/event_rss_feed?tags=4539649
-                            //https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
-                //    https://www.warroadhockey.com/event_rss_feed?tags=265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+
+                        //      https://www.warroadhockey.com/event_rss_feed?tags=4539649
+                        //https://www.warroadhockey.com/event_rss_feed?tags=
+                        //      https%3A%2F%2Fwww.warroadhockey.com%2Fevent_rss_feed%3Ftags%3D265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+                        //      https://www.warroadhockey.com/event_rss_feed?tags=265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
+                        //      webcal://www.warroadhockey.com/ical_feed?tags=265387%2C4539608%2C4539626%2C4539627%2C4539628%2C4539649
     </script>
-    <link rel='stylesheet' href='style.css'>
 </head>
 <body>
     
@@ -386,53 +503,43 @@
         <tr>
             <td>
                 <div class="schedulebody">
-                    <h1>Game Schedule</h1>
+                    <h1>A Look at Today</h1>
                     <ul id="main-content">
+                        <li>Loading...</li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+                <div class="container">
+                    <div id="logo"><img src="Logo.PNG" width="300" /></div>
+                        <div id="content-slider">
+                            <div id="slider">
+                                <div id="mask">
+                                    <ul>
+                                        <li id="first" class="firstanimation"><img src="FeaturedProduct1.PNG" width="300" /></li>
+                                        <li id="second" class="secondanimation"><img src="FeaturedProduct2.PNG" width="300" /></li>
+                                        <li id="third" class="thirdanimation"><img src="FeaturedProduct3.PNG" width="300" /></li>
+                                        <li id="fourth" class="fourthanimation"><img src="FeaturedProduct3.PNG" width="300" /></li>
+                                        <li id="fifth" class="fifthanimation"><img src="FeaturedProduct4.PNG" width="300" /></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="schedulebody">
+                    <h1>Coming Up</h1>
+                    <ul id="arena-content">
                         <li>Loading...</li>
                     </ul>
 
 
                 </div>
             </td>
-            <td>
-                <div class="container">
-                    <div id="content-slider">
-                        <div id="slider">
-                            <div id="mask">
-                                <ul>
-                                    <li id="first" class="firstanimation"><img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/10-october-endcaps-2018-1-600x760.jpg" /></li>
-                                    <li id="second" class="secondanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/10-october-endcaps-2018-2-600x734.jpg" />
-                                    </li>
-                                    <li id="third" class="thirdanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/402008october2018_low-1-600x750.jpg" />
-                                    </li>
-                                    <li id="fourth" class="fourthanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/402008october2018_low-2-600x750.jpg" />
-                                    </li>
-                                    <!--   <li id="fifth" class="fifthanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/402008october2018_low-3-600x750.jpg" />
-                                    </li>
-                                    <li id="fifth" class="fifthanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/402008october2018_low-4-600x750.jpg" />
-                                    </li>
-                                    <li id="fifth" class="fifthanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/402008october2018_low-5-600x750.jpg" />
-                                    </li>
-                                    <li id="fifth" class="fifthanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/402008october2018_low-6-600x750.jpg" />
-                                    </li>
-                                    -->
-                                    <li id="fifth" class="fifthanimation">
-                                        <img src="http://www.marvinhomecenter.com/wp-content/uploads/2018/10/402008october2018_low-7-600x750.jpg" />
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </td>
-        </tr>
+
     </table>
 </body>
 </html>

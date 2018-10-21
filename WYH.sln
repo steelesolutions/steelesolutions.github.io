@@ -5,9 +5,9 @@ VisualStudioVersion = 15.0.28010.2003
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{46F96B8E-4C83-439E-8D2A-965122A60206}"
 	ProjectSection(SolutionItems) = preProject
-		bootstrap.min.js = bootstrap.min.js
+		..\..\..\Desktop\imageSliderExample.html = ..\..\..\Desktop\imageSliderExample.html
 		index.html = index.html
-		rss_original.js = rss_original.js
+		..\..\..\Desktop\Slider2.html = ..\..\..\Desktop\Slider2.html
 		style.css = style.css
 	EndProjectSection
 EndProject
